@@ -12,6 +12,8 @@ This is a simple RESTful Web API built using **ASP.NET Core** to manage regional
 - .NET 8.0
 - Swagger (API Documentation)
 - Dependency Injection & Repository Pattern
+- Authentication and Authorization
+- Automapper for DTOs and Entities
 
 ---
 
