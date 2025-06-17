@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyApiProjectTest.Data;
@@ -15,27 +16,20 @@ namespace MyApiProjectTest.Controllers{
         private readonly NzWalksDbContext _nzWalksDbContext;
         private readonly IDbRepository _dbRepository;
         
-        public RegionsController(NzWalksDbContext nzWalksDbContext, IDbRepository dbRepository) 
+        private readonly IMapper _mapper;
+        public RegionsController(NzWalksDbContext nzWalksDbContext, IDbRepository dbRepository, IMapper mappper) 
         {
             _nzWalksDbContext = nzWalksDbContext;
             _dbRepository = dbRepository;
+            _mapper = mappper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllRegions(){
             
             var regionsDomain = await _dbRepository.GetAllRegionAsync();
-            List<RegionDTO> regionDTO = new List<RegionDTO>();
-
-            foreach (var region in regionsDomain){
-                regionDTO.Add(new RegionDTO(){
-                    Id = region.Id,
-                    Code = region.Code,
-                    RegionImageURL = region.RegionImageURL,
-                    Name = region.Name
-                });
-            }
-            return Ok(regionDTO);
+            
+            return Ok(_mapper.Map<List<RegionDTO>>(regionsDomain));
         }
 
         [HttpGet]
@@ -45,23 +39,12 @@ namespace MyApiProjectTest.Controllers{
             if(region == null){
                 return NotFound();
             }
-            return Ok(new RegionDTO()
-            {
-                Id = region.Id,
-                RegionImageURL = region.RegionImageURL,
-                Name = region.Name,
-                Code = region.Code
-            });
+            return Ok(_mapper.Map<RegionDTO>(region));
         }
         
         [HttpPost]
         public async Task<IActionResult> CreateNewRegion([FromBody] AddRegionRequestDTO addRegionRequestDTO){
-            var regionDomain = new Region(){
-                Id = Guid.NewGuid(),
-                RegionImageURL = addRegionRequestDTO.RegionImageURL,
-                Name = addRegionRequestDTO.Name,
-                Code = addRegionRequestDTO.Code
-            };
+            var regionDomain = _mapper.Map<Region>(addRegionRequestDTO);
 
             try{
                 await _dbRepository.AddRegionAsync(regionDomain);
@@ -80,10 +63,8 @@ namespace MyApiProjectTest.Controllers{
             if(regionDomain is null){
                 return NotFound();
             }
-            regionDomain.Code = updateDTO.Code;
-            regionDomain.Name = updateDTO.Name;
-            regionDomain.RegionImageURL = updateDTO.RegionImageURL;
-
+            regionDomain = _mapper.Map<Region>(updateDTO);
+            
             // Update the database here
             await _dbRepository.UpdateRegionAsync(regionDomain);
             return CreatedAtAction(nameof(GetRegionsByGuid), new{id = regionDomain.Id}, regionDomain);

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyApiProjectTest.Data;
+using MyAPIProjectTest.Mapper;
 using MyAPIProjectTest.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<NzWalksDbContext>(options => 
 options.UseSqlite(builder.Configuration.GetConnectionString("NzWalksConnectionString")));
 builder.Services.AddScoped(typeof(IDbRepository), typeof(RegionDBRepository));
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
 
