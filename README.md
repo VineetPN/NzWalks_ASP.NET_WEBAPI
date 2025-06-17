@@ -9,7 +9,7 @@ This is a simple RESTful Web API built using **ASP.NET Core** to manage regional
 - ASP.NET Core Web API
 - Entity Framework Core
 - SQL Server / In-Memory DB (Configurable)
-- .NET 6 / .NET 7
+- .NET 8.0
 - Swagger (API Documentation)
 - Dependency Injection & Repository Pattern
 
@@ -24,21 +24,3 @@ This is a simple RESTful Web API built using **ASP.NET Core** to manage regional
 - ❌ Delete region
 - 🧪 Swagger UI for testing endpoints
 
----
-
-## 🏁 Getting Started
-
-### ✅ Prerequisites
-
-- [.NET SDK 6/7+](https://dotnet.microsoft.com/download)
-- SQL Server or use In-Memory DB (dev mode)
-- Visual Studio / VS Code
-
----
-
-### 🛠️ Setup Instructions
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/your-username/RegionAPI.git
-   cd RegionAPI
